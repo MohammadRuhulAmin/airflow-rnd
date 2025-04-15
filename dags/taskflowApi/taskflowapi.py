@@ -11,9 +11,9 @@ default_args = {
     dag_id='taskflow_api_v1',
     default_args=default_args,
     start_date=datetime(2025, 4, 15),
-    schedule_interval='@daily',
+    schedule_interval='0 3 * * Tue,Fri',
     catchup=False,
-    tags=['example']
+    tags=['taskflow-example-1']
 )
 def hellow_world_etl():
     
