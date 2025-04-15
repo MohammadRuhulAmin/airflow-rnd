@@ -13,7 +13,7 @@ with DAG(
     default_args=default_args,
     description='Example 1',
     start_date=datetime(2025, 4, 14),
-    schedule_interval='@daily' 
+    schedule_interval='@daily'
 ) as dag:
 
     task_1 = BashOperator(
@@ -36,9 +36,12 @@ with DAG(
         task_id = 'fifth_task',
         bash_command = 'echo task-5 Executed!'
     )
+    # Method - 1 
+    # task_1.set_downstream(task_2)
+    # task_1.set_downstream(task_3)
+    # task_2.set_downstream(task_4)
+    # task_2.set_downstream(task_5)
 
-    task_1.set_downstream(task_2)
-    task_1.set_downstream(task_3)
-    task_2.set_downstream(task_4)
-    task_2.set_downstream(task_5)
-    
+    # Method - 2
+    task_1 >> [task_2, task_3]
+    task_2 >> [task_4, task_3]
