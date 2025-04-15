@@ -14,7 +14,8 @@ def greet():
 def treat():
     print('Treating from Python')
 
-def variable_greet(name, age):
+def variable_greet( age,ti):
+    name = ti.xcom_pull(task_ids='get_name')
     print(f'name: {name}, age:{age}')
 
 def variable_treet(name, age):
@@ -36,10 +37,15 @@ with DAG(
     schedule_interval='@daily',
     catchup=False
 ) as dag:
+    task0 = PythonOperator(
+        task_id='greet-0',
+        python_callable=greet
+    )
+
     task1 = PythonOperator(
         task_id='greet-1',
         python_callable=variable_greet,
-        op_kwargs={'name':'Top', 'age':25}
+        op_kwargs={'age':25}
     )
 
 
@@ -61,4 +67,4 @@ with DAG(
     )
 
     
-    task1 >> task2 >> task3 >> task4 
+    task3 >> task1 >> task2 >> task0 >> task4
